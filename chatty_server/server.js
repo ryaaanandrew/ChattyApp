@@ -26,13 +26,13 @@ wss.on('connection', (ws) => {
    console.log(msg);
    wss.clients.forEach(function each(client) {
        client.send(msg);
-       console.log('3. message sent to each client...')
     });
   };
 
   ws.on('message', (data) => {
-    console.log('2. message received from client')
     let parsedMessage = JSON.parse(data);
+
+
     parsedMessage.ID = uuidv1();
     wss.broadcast(JSON.stringify(parsedMessage))
   });

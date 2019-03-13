@@ -7,20 +7,35 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUse: { name: "bob" },
+      currentUser: { name: ''},
       messages: []
     }
   }
 
   addMessage = (e) => {
     if (e.key === "Enter") { 
-      let messages = this.state.messages;
       const newMessage = {
         username: e.target.previousSibling.value,
         content: e.target.value
       }
+      const newUser = e.target.previousSibling.value;
+      const addCurrentUser = { name: newUser}
+      this.setState( {currentUser: addCurrentUser} )
       this.socket.send(JSON.stringify(newMessage))
+
       e.target.value = '';
+    }
+  }
+
+  changeUsername = (e) => {
+    if (e.key === "Enter") { 
+      alert('username changed')
+      // const newMessage = {
+      //   username: e.target.previousSibling.value,
+      //   content: e.target.value
+      // }
+      // this.socket.send(JSON.stringify(newMessage))
+      // e.target.value = '';
     }
   }
 
@@ -49,6 +64,7 @@ class App extends Component {
               />
             <ChatBar 
               addMessage = {this.addMessage}
+              changeUsername = {this.changeUsername}
             />
           </div>
     );
