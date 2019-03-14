@@ -7,7 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: { name: ''},
+      currentUser: { name: 'Anonymous'},
       messages: []
     }
   }
@@ -15,6 +15,7 @@ class App extends Component {
   addMessage = (e) => {
     if (e.key === "Enter") { 
       const newMessage = {
+        type: "postMessage",
         username: e.target.previousSibling.value,
         content: e.target.value
       }
@@ -27,16 +28,15 @@ class App extends Component {
     }
   }
 
-  changeUsername = (e) => {
-    if (e.key === "Enter") { 
-      alert('username changed')
-      // const newMessage = {
-      //   username: e.target.previousSibling.value,
-      //   content: e.target.value
-      // }
-      // this.socket.send(JSON.stringify(newMessage))
-      // e.target.value = '';
-    }
+  changeUsername = e => {
+      const oldUser = this.state.currentUser.name;
+      this.setState( { currentUser: {name: e.target.value } } ) 
+      const changeNotification = {
+        type: 'postMessage',
+        content: `${oldUser} has changed his name to ${e.target.value}`
+      }
+
+      this.socket.send(JSON.stringify(changeNotification))
   }
 
   componentDidMount() {
@@ -48,7 +48,7 @@ class App extends Component {
 
     this.socket.addEventListener('message', (e) => {
       let message = JSON.parse(e.data)
-      console.log(message)
+      console.log('incoming message from server...', message)
       this.setState({messages: [...this.state.messages, message] })
     });
 
