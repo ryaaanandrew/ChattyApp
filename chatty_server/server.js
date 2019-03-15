@@ -48,6 +48,7 @@ wss.on('connection', (ws) => {
       parsedMessage.type = 'incomingMessage';
       wss.broadcast(JSON.stringify(parsedMessage))
     } else if (parsedMessage.type === 'postNotification'){
+      parsedMessage.username = 'System'
       parsedMessage.type = 'incomingNotification'
       wss.broadcast(JSON.stringify(parsedMessage))
     }
