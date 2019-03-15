@@ -45,11 +45,11 @@ wss.on('connection', (ws) => {
       if (parsedMessage.username === '') {
         parsedMessage.username = 'Anonymous'
       }
-
       parsedMessage.type = 'incomingMessage';
       wss.broadcast(JSON.stringify(parsedMessage))
-    } else {
-      console.log('error')
+    } else if (parsedMessage.type === 'postNotification'){
+      parsedMessage.type = 'incomingNotification'
+      wss.broadcast(JSON.stringify(parsedMessage))
     }
 
   });

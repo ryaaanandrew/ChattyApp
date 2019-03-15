@@ -14,7 +14,7 @@ class App extends Component {
   }
 
   addMessage = (e) => {
-    if (e.key === "Enter") { 
+    if (e.key === "Enter" && e.target.value) { 
       const newMessage = {
         type: "postMessage",
         username: e.target.previousSibling.value,
@@ -36,7 +36,7 @@ class App extends Component {
     if(oldUser !== e.target.value) {
       this.setState( { currentUser: {username: newUser} } ) 
       const changeNotification = {
-        type: 'postMessage',
+        type: 'postNotification',
         content: `${oldUser} has changed his name to ${e.target.value}`
       }
   
@@ -53,12 +53,10 @@ class App extends Component {
 
     this.socket.addEventListener('message', (e) => {
       let message = JSON.parse(e.data)
-
+      console.log('incoming message from server: ', message)
       if(!isNaN(message)) {
         this.setState( { usersOnline: message } )
       }
-      console.log('users online: ', this.state.usersOnline)
-      console.log('incoming message from server...', message)
       this.setState({messages: [...this.state.messages, message] })
     });
 
