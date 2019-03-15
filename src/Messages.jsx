@@ -5,7 +5,7 @@ function MessageItem(props) {
         <div>
             <div className="message" key=''>
                 <span className="message-username">{props.message.username}</span>
-                <span className="message-content">{props.message.content}</span>
+                <span className="message-content" id={props.message.type}>{props.message.content}</span>
             </div>
         </div>
       );

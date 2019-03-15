@@ -43,6 +43,14 @@ body {
   padding: 5px;
 }
 
+#incomingNotification {
+  width: auto;
+  background-color: salmon;
+  padding: 5px;
+  border-radius: 6px;
+  text-align: center;
+}
+
 .message.system {
   font-style: italic;
   padding: 5px 20px;
