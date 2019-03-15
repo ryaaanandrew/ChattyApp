@@ -1,10 +1,4 @@
 Chatty App
-
-A client-side SPA (single-page app) built with ReactJS, Webpack, Babel, Node.js and Web Sockets. The client-side app communicates with a server via WebSockets for multi-user real-time updates. No persistent database is involved; the focus is on the client-side experience
-
-chatty-app
-
-Chatty App
 =====================
 
 A client-side SPA (single-page app) built with ReactJS, Webpack, Babel, Node.js and Web Sockets. The client-side app communicates with a server via WebSockets for multi-user real-time updates. No persistent database is involved; the focus is on the client-side experience
@@ -39,7 +33,6 @@ React
 Webpack
 babel-loader
 webpack-dev-server
-```
 
 ### Dependencies
 
