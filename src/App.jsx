@@ -7,8 +7,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: { name: 'Anonymous'},
-      messages: []
+      currentUser: { username: 'Anonymous'},
+      messages: [],
+      usersOnline: 0
     }
   }
 
@@ -20,7 +21,7 @@ class App extends Component {
         content: e.target.value
       }
       const newUser = e.target.previousSibling.value;
-      const addCurrentUser = { name: newUser}
+      const addCurrentUser = { username: newUser}
       this.setState( {currentUser: addCurrentUser} )
       this.socket.send(JSON.stringify(newMessage))
 
@@ -29,25 +30,34 @@ class App extends Component {
   }
 
   changeUsername = e => {
-      const oldUser = this.state.currentUser.name;
-      this.setState( { currentUser: {name: e.target.value } } ) 
+    const oldUser = this.state.currentUser.username;
+    const newUser = e.target.value ? e.target.value : 'Anonymous'
+
+    if(oldUser !== e.target.value) {
+      this.setState( { currentUser: {username: newUser} } ) 
       const changeNotification = {
         type: 'postMessage',
         content: `${oldUser} has changed his name to ${e.target.value}`
       }
-
+  
       this.socket.send(JSON.stringify(changeNotification))
+    }
   }
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
     
     this.socket.addEventListener('open', (e) => {
-
+      console.log('Client connected...')
     });
 
     this.socket.addEventListener('message', (e) => {
       let message = JSON.parse(e.data)
+
+      if(!isNaN(message)) {
+        this.setState( { usersOnline: message } )
+      }
+      console.log('users online: ', this.state.usersOnline)
       console.log('incoming message from server...', message)
       this.setState({messages: [...this.state.messages, message] })
     });
@@ -58,7 +68,8 @@ class App extends Component {
   render() {
     return ( 
           <div>
-            <NavBar />
+            <NavBar 
+              usersOnline = {this.state.usersOnline}/>
             <MessageList 
               messages = {this.state.messages}
               />
